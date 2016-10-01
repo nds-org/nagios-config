@@ -1,0 +1,55 @@
+define host {
+        use                             linux-server
+        host_name                       www.cwdev.ndslabs.org
+        alias                           cwdev
+        address                         141.142.210.151
+        max_check_attempts              5
+        check_interval			1
+        check_period                    24x7
+        notification_interval           1
+	notification_options            d,r
+        notification_period             24x7
+}
+
+define service{
+        use                             generic-service
+        host_name                       www.cwdev.ndslabs.org
+        service_description             Angular-UI
+        check_command                   check_https_url!443!/
+        check_interval			1
+        notification_interval           1
+}
+
+define service{
+        use                             generic-service
+        host_name                       www.cwdev.ndslabs.org
+        service_description             API Server
+        check_command                   check_https_url!443!/api/healthz
+        check_interval			1
+        notification_interval           1
+}
+
+define service {
+        use                             generic-service
+        host_name                       www.cwdev.ndslabs.org
+        service_description             Load
+        check_command                   check_nrpe_remote_ssh!127.0.0.1!check_load
+        check_interval                  1
+        notification_interval           1
+}
+define service {
+        use                             generic-service
+        host_name                       www.cwdev.ndslabs.org
+        service_description             Total processes
+        check_command                   check_nrpe_remote_ssh!127.0.0.1!check_total_procs
+        check_interval                  1
+        notification_interval           1
+}
+define service {
+        use                             generic-service
+        host_name                       www.cwdev.ndslabs.org
+        service_description             Disk
+        check_command                   check_nrpe_remote_ssh!127.0.0.1!check_disk
+        check_interval                  1
+        notification_interval           1
+}
